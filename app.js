@@ -1,5 +1,6 @@
 const app = require('./config/server');
 const { isAuthenticated, isNotAuthenticated } = require('./middlewares/auth');
+const { handleErrors } = require('./middlewares/error');
 const sims = require('./utils/sims');
 const multer = require('multer');
 const storage = multer.memoryStorage(); 
@@ -8,6 +9,7 @@ const FormData = require('form-data');
 
 /* KODE STATUS */
 const tokenExpired = 108;
+const tokenNotFound = 404;
 
 /* LAYOUT */
 const layout = 'layouts/main-layouts';
@@ -38,7 +40,7 @@ app.get('/', isAuthenticated, async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -58,7 +60,7 @@ app.get('/services', async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -100,7 +102,7 @@ app.post('/topup', isAuthenticated, async (req, res) => {
             res.redirect('/topup')
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -131,7 +133,7 @@ app.get('/transaction', isAuthenticated, async (req, res) => {
             res.json(dataHistory);
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -144,12 +146,19 @@ app.get('/transaction/:service_code', isAuthenticated, async (req, res) => {
 
     try {
         const dataServices = await sims.getServices(token);
+        const page = dataServices.data.find(code => code.service_code == service_code)
         const dataProfile = await sims.getProfile(token);
         const dataSaldo = await sims.getSaldo(token);
         if (dataSaldo.status === tokenExpired) {
             req.session.response = dataSaldo;
             res.redirect('/logout');
-        } else {
+        } else if(!page){
+            res.render('404', {
+                currentPath: '/',
+                layout,
+                title: '404',
+            })
+        }else {
             res.render('transaction', {
                 currentPath: `/transaction/${service_code}`,
                 layout,
@@ -161,7 +170,7 @@ app.get('/transaction/:service_code', isAuthenticated, async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -181,7 +190,7 @@ app.post('/transaction', isAuthenticated, async (req, res) => {
             res.redirect(`/transaction/${data.service_code}`);
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -205,7 +214,7 @@ app.get('/account', isAuthenticated, async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 
 });
@@ -242,7 +251,7 @@ app.post('/login', async (req, res) => {
             res.redirect('/login');
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -277,7 +286,7 @@ app.post('/signup', async (req, res) => {
             res.redirect('/signup');
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -293,7 +302,7 @@ app.post('/profile/update', async (req, res) => {
             res.redirect('/account');
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -315,7 +324,7 @@ app.post('/profile/image', upload.single('file'), async (req, res) => {
             res.redirect('/account');
         }
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 });
 
@@ -323,17 +332,18 @@ app.post('/profile/image', upload.single('file'), async (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy((error) => {
         if (error) {
-            console.error(error);
+            next(error);
         }
     });
     res.redirect('/login');
 });
 
 app.use((req, res, next) => {
-    // res.status(404).send('404 Not Found');
     res.render('404', {
         currentPath: '/',
         layout,
         title: '404',
     })
 });
+
+app.use(handleErrors);

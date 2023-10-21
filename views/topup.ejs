@@ -2,7 +2,7 @@
     <%- include('components/alert') %>
     <div class="row py-5 mb-2">
         <div class="col-md-6">
-            <div class="rounded-circle mb-3" style="width: 90px; height: 90px; overflow: hidden; display: inline-block;">
+            <div class="rounded-circle mb-3 d-inline-block overflow-hidden" style="width: 90px; height: 90px; overflow: hidden;">
                 <a href="/account"><img src="/public/image/assets/Illustrasi Login.png" class="img-fluid" alt="" id="image"></a>
             </div>
             <p class="h5">Selamat Datang,</p>
@@ -10,9 +10,9 @@
         </div>
         <div class="col-md-6 rounded rounded-4 background-saldo p-4 pb-0">
             <p class="h5 text-white fw-semibold">Saldo anda</p>
-            <p class="h2 text-white my-3" id="viewsaldo">Rp. <%= dataSaldo.data.balance.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %></p>
-            <p class="h2 text-white fw-normal my-3 d-none" id="closesaldo" onclick="toggleSaldo()">**************</p>
-            <p class="text-small text-white fw-normal" onclick="toggleSaldo()" style="cursor: pointer; margin-top: 28px;">Tutup saldo</p>
+            <p class="h2 text-white my-3 d-none" id="viewsaldo">Rp. <%= dataSaldo.data.balance.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %></p>
+            <p class="h2 text-white fw-normal my-3" id="closesaldo" onclick="toggleSaldo()">**************</p>
+            <p class="text-small text-white fw-normal" onclick="toggleSaldo()" id="btnview" style="cursor: pointer; margin-top: 28px;">Buka Saldo</p>
         </div>
     </div>
 

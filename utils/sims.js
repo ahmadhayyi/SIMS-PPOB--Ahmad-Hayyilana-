@@ -1,6 +1,5 @@
 /* URL */
 const URL = 'https://take-home-test-api.nutech-integrasi.app';
-const axios = require('axios');
 
 const register = async (data) => {
     const regis = await fetch(`${URL}/registration`, {
@@ -50,13 +49,15 @@ const udpateProfile = async (token, data) => {
 }
 
 const updateImage = async (token, formData) => {
-    const profileImage = await axios.put(`${URL}/profile/image`, formData, {
+    const profileImage = await fetch(`${URL}/profile/image`, {
+        method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
             ...formData.getHeaders(),
         },
-    })
-    return await profileImage;
+        body: formData.getBuffer(), 
+    });
+    return await profileImage.json();
 }
 
 const getSaldo = async (token) => {
@@ -92,8 +93,8 @@ const getBanner = async (token) => {
     return await banner.json()
 }
 
-const historyTransaction = async (token) => {
-    const history = await fetch(`${URL}/transaction/history`, {
+const historyTransaction = async (token, offset = 0) => {
+    const history = await fetch(`${URL}/transaction/history?offset=${offset}${offset != 0 ? '&limit=50' : ''}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

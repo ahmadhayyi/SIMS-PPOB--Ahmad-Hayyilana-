@@ -26,7 +26,7 @@ const cancelEdit = () => {
     setTimeout(() => {
         const divAction = document.getElementById('action');
         divAction.classList.remove('d-none');
-    }, 150); // Delay 1 detik (150 ms)
+    }, 150);
 }
 
 const submitImage = () => {

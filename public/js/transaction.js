@@ -11,55 +11,61 @@ const showAll = () => {
 
 const showMore =  (month) => {
     const offset = document.querySelectorAll(`.list-data-${month}`).length
-    const data = {
-        offset,
-    }
     fetch(`/transaction?offset=${offset}`, {
         method: 'GET',
     })
     .then(response => response.json())
     .then(data => {
-        listData(data);
+        listData(data, month);
     })
     .catch(error => {
         console.error(error)
     })
 }
 
-const listData =  (data) => {
-    const group = document.querySelector(`.list-group-${data.month}`);
-    const showmore = document.getElementById('showmore');
+const listData =  (data, bulan) => {
+    const group = document.querySelector(`.list-group-${bulan}`);
+    const showmore = document.querySelector(`.show-more-${bulan}`);
+    showmore.remove()
 
     const namaBulan = ["Januari", "Februari", "Maret", "April", 
                     "Mei", "Juni", "Juli", "Agustus", 
                     "September", "Oktober", "November", "Desember"]; 
 
-    // if (data.data.records.length == 0) {
-    //     showmore.classList.add('d-none')
-    // }
-
-    // let newLi = '';
+    let newLi = '';
     
-    // data.data.records.forEach(transaksi => {
-    //     const type = transaksi.transaction_type 
-    //     const amount = transaksi.total_amount
-    //     const createdOn = new Date(transaksi.created_on)
-    //     const day = createdOn.getDate();
-    //     const month = namaBulan[createdOn.getMonth()];
-    //     const year = createdOn.getFullYear();
-    //     const jam = createdOn.toLocaleTimeString()
-    //     const description = transaksi.description
+    let getData = 0;
+    data.data.records.forEach(transaksi => {
+        const createdOn = new Date(transaksi.created_on)
+        const month = createdOn.getMonth();
+        const day = createdOn.getDate();
+        const year = createdOn.getFullYear();
+        const jam = createdOn.getHours();
+        const menit = createdOn.getMinutes();
+        const detik = createdOn.getSeconds();
 
-    //     newLi  +=  `<li class='list-group-item d-flex justify-content-between align-items-start my-3 px-4 py-3'>
-    //                 <div class='ms-2 me-auto'>
-    //                     <div class='fw-bolder fs-4 ${type == 'TOPUP' ? 'text-success' : 'text-danger'}  text-success'>+ Rp. ${amount.toLocaleString('id-ID')}</div>
-    //                     <span class='small'> ${day} ${month} ${year} ${jam}</span>
-    //                 </div>
-    //                 <p class='fs-6 text-secondary'>${description}</p>
-    //             </li>`;
+        if(month == bulan && getData < 5){
+            getData++
+            newLi  +=  `<div class='card my-3 list-data-${bulan}'>
+                            <div class='card-body'>
+                                <div class='row'>
+                                    <div class='col-6'>
+                                        <div class='fw-bolder mb-1 fs-5 ${transaksi.transaction_type == 'TOPUP' ? 'text-success' : 'text-danger'} text-success'>+ Rp. ${transaksi.total_amount.toLocaleString('id-ID')}</div>
+                                        <small class='text-small fw-normal fs-8'>${day} ${namaBulan[month]} ${year} </small> <small class='text-small fw-normal fs-8 ms-1'> ${jam}:${menit} WIB</small>
+                                    </div>
+                                    <div class='col-6 text-end'>
+                                        <small class='text-small fw-normal fs-8'>${transaksi.description}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+        }
 
-        
-    // })
+    })
 
-    // group.innerHTML += newLi
+    if (getData !== 0) {
+        newLi += `<a class="text-center text-decoration-none fw-semibold text-danger d-block mt-3 show-more-${bulan}" onclick="showMore('${bulan}')" style="cursor: pointer;">Show More</a>`;
+    }
+
+    group.innerHTML += newLi
 }

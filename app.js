@@ -2,11 +2,11 @@ const app = require('./config/server');
 const { isAuthenticated, isNotAuthenticated } = require('./middlewares/auth');
 const sims = require('./utils/sims');
 const multer = require('multer');
-const storage = multer.memoryStorage(); // Menggunakan memory storage agar file tidak disimpan secara permanen
+const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 const FormData = require('form-data');
 
-/* KODE TOKEN */
+/* KODE STATUS */
 const tokenExpired = 108;
 
 /* LAYOUT */
@@ -19,10 +19,10 @@ const URL = 'https://take-home-test-api.nutech-integrasi.app';
 app.get('/', isAuthenticated, async (req, res) => {
     const token = req.session.token;
     try {
-        const dataProfile = await sims.getProfile(token); /* Profile */
-        const dataSaldo = await sims.getSaldo(token); /* Saldo */
-        const dataServices = await sims.getServices(token); /* Services */
-        const dataBanner = await sims.getBanner(token); /* Banner */
+        const dataProfile = await sims.getProfile(token); 
+        const dataSaldo = await sims.getSaldo(token); 
+        const dataServices = await sims.getServices(token);
+        const dataBanner = await sims.getBanner(token);
         if (dataBanner.status === tokenExpired) {
             req.session.response = dataBanner;
             res.redirect('/logout');
@@ -113,8 +113,7 @@ app.get('/transaction', isAuthenticated, async (req, res) => {
     try {
         const dataProfile = await sims.getProfile(token)
         const dataSaldo = await sims.getSaldo(token)
-        const dataHistory = await sims.historyTransaction(token);
-        dataHistory.month = offset
+        const dataHistory = await sims.historyTransaction(token, offset);
         if (dataHistory.status === tokenExpired) {
             req.session.response = dataHistory;
             res.redirect('/logout');
@@ -176,7 +175,7 @@ app.post('/transaction', isAuthenticated, async (req, res) => {
         req.session.response = response;
         if (response.status === tokenExpired) {
             res.redirect('/logout');
-        } else if (response.status === 102) { /* Service tidak ditemukan dan Saldo tidak mencukupi */
+        } else if (response.status === 102) {
             res.redirect(`/transaction/${data.service_code}`);
         } else {
             res.redirect(`/transaction/${data.service_code}`);
@@ -308,8 +307,7 @@ app.post('/profile/image', upload.single('file'), async (req, res) => {
     });
 
     try {
-        const responses = await sims.updateImage(token, formData);
-        const response = responses.data;
+        const response = await sims.updateImage(token, formData);
         req.session.response = response;
         if (response.status === tokenExpired) {
             res.redirect('/logout');

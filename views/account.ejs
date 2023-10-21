@@ -2,7 +2,7 @@
     <%- include('components/alert') %>
     <form action="/profile/image" method="POST" enctype="multipart/form-data" id="formimage">
         <div class="text-center">
-            <div class="rounded-circle image-container" onclick="inputClick()" style="background-image: url('<%= dataProfile.data.profile_image %>');">
+            <div class="rounded-circle image-container overflow-hidden position-relative d-inline-block" onclick="inputClick()" style="background-image: url('<%= dataProfile.data.profile_image %>');">
                 <div class="position-relative">
                 </div>
             </div>

@@ -7,6 +7,9 @@ const showAll = () => {
 
     const allTransaction = document.querySelectorAll('.all-transaction');
     allTransaction.forEach(el => el.classList.remove('d-none'))
+
+    const judul = document.getElementById('judul');
+    judul.innerHTML = 'Semua Transaksi'
 }
 
 const showMore =  (month) => {
@@ -66,7 +69,7 @@ const listData =  (data, bulan) => {
     })
 
     if (getData !== 0) {
-        newLi += `<a class="text-center text-decoration-none fw-semibold text-danger d-block mt-3 show-more-${bulan}" onclick="showMore('${bulan}')" style="cursor: pointer;">Show More</a>`;
+        newLi += `<a class="text-center text-decoration-none fw-semibold text-danger d-block mt-3 show-more-${bulan}" onclick="showMore('${bulan}')" style="cursor: pointer;">Lainnya</a>`;
     }
 
     group.innerHTML += newLi

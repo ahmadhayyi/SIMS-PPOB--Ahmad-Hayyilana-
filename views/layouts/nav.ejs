@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary ">
+    <div class="container py-2">
+        <a class="navbar-brand fw-bolder d-flex align-items-center" href="/">
+            <img class="me-2" src="/public/image/assets/Logo.png" alt="Bootstrap" width="24" height="24">SIMS PPOB
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ms-auto">
+                  <a class="nav-link mx-3 <%= currentPath === '/topup' ? 'text-danger active' : 'text-dark' %> fw-semibold" aria-current="page" href="/topup">Topup</a>
+                  <a class="nav-link mx-3 <%= currentPath === '/transaction' ? 'text-danger active' : 'text-dark' %> fw-semibold" href="/transaction">Transaction</a>
+                  <a class="nav-link mx-3 <%= currentPath === '/account' ? 'text-danger active' : 'text-dark' %> fw-semibold" href="/account">Account</a>
+              </div>
+          </div>
+    </div>
+</nav>

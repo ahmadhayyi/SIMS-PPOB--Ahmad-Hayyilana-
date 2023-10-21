@@ -1,0 +1,117 @@
+<% 
+const namaBulan = ["Januari", "Februari", "Maret","April", 
+                    "Mei", "Juni", "Juli", "Agustus", 
+                    "September", "Oktober", "November", "Desember"]; 
+
+const uniqueMonths = [];
+
+dataHistory.data.records.forEach(transaction => {
+    const transactionDate = new Date(transaction.created_on);
+    const month = transactionDate.getMonth();
+    const year = transactionDate.getFullYear();
+
+    const isLastFiveMonths = (new Date().getMonth() - month < 5) && year === new Date().getFullYear();
+
+    if (!uniqueMonths.includes(month) && isLastFiveMonths) {
+        uniqueMonths.push(month);
+    }
+});
+
+// const uniqueMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]/* .slice(-5) */;
+
+%>
+
+<div class="container pt-2 pb-5 mb-5">
+    <div class="row py-5 mb-2">
+        <div class="col-md-6">
+            <div class="rounded-circle mb-3" style="width: 90px; height: 90px; overflow: hidden; display: inline-block;">
+                <a href="/account"><img src="/public/image/assets/Illustrasi Login.png" class="img-fluid" alt="" id="image"></a>
+            </div>
+            <p class="h5">Selamat Datang,</p>
+            <p class="h3 fw-bolder"><%= dataProfile.data.first_name %> <%= dataProfile.data.last_name %></p>
+        </div>
+        <div class="col-md-6 rounded rounded-4 background-saldo p-4 pb-0">
+            <p class="h5 text-white fw-semibold">Saldo anda</p>
+            <p class="h2 text-white my-3" id="viewsaldo">Rp. <%= dataSaldo.data.balance.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %></p>
+            <p class="h2 text-white fw-normal my-3 d-none" id="closesaldo" onclick="toggleSaldo()">**************</p>
+            <p class="text-small text-white fw-normal" onclick="toggleSaldo()" style="cursor: pointer; margin-top: 28px;">Tutup saldo</p>
+        </div>
+    </div>
+
+    <p class="h5">Semua Transaksi</p>
+
+    <nav class="d-none all-transaction">
+        <div class="nav nav-tabs my-4 border-0" id="nav-tab" role="tablist">
+            <% uniqueMonths.forEach((month, i) => { %>
+                <button class="nav-link text-dark <%= (i == (uniqueMonths.length - 1) ? 'active' : '') %>" id="nav-<%= month %>-tab" data-bs-toggle="tab" data-bs-target="#nav-<%= month %>" type="button" role="tab" aria-controls="nav-<%= month %>" aria-selected="true"><%= namaBulan[month] %></button>
+            <% }) %>
+        </div>
+    </nav>
+    <div class="tab-content d-none all-transaction" id="nav-tabContent">
+        <%  uniqueMonths.forEach((bulan, i) => { 
+            let list = 0 %>
+        <div class="tab-pane fade show <%= (i == (uniqueMonths.length - 1) ? 'active' : '') %> list-group-<%= bulan %>" id="nav-<%= bulan %>" role="tabpanel" aria-labelledby="nav-<%= bulan %>-tab" tabindex="0">
+            <% dataHistory.data.records.forEach(transaksi => { 
+                const createdOn = new Date(transaksi.created_on)
+                const month = createdOn.getMonth();
+                const day = createdOn.getDate();
+                const year = createdOn.getFullYear();
+                const jam = createdOn.getHours();
+                const menit = createdOn.getMinutes();
+                const detik = createdOn.getSeconds(); 
+                if (bulan == month) { 
+                    list++ %>
+                    <div class="card my-3 list-data-<%= bulan %>">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="fw-bolder mb-1 fs-5 <%= transaksi.transaction_type == 'TOPUP' ? 'text-success' : 'text-danger' %> text-success">+ Rp. <%= transaksi.total_amount.toLocaleString('id-ID') %></div>
+                                    <small class="text-small fw-normal fs-8"><%= `${day} ${namaBulan[month]} ${year}` %></small> <small class="text-small fw-normal fs-8 ms-1"><%= `${jam}:${menit} WIB` %></small>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <small class="text-small fw-normal fs-8"><%= transaksi.description %></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <% }}) %>
+            
+            <% if(list === 0){ %>
+                <div class="text-center mt-5">
+                    Maaf tidak ada histori transaksi saat ini
+                </div>
+            <% } %>
+            
+            <a class="text-center text-decoration-none fw-semibold text-danger d-block mt-3" id="show-more" onclick="showMore('<%= bulan %>')">Show More</a>
+        </div>
+        <% }) %>
+    </div>
+    
+    <% dataHistory.data.records.forEach(transaksi => { 
+        const createdOn = new Date(transaksi.created_on)
+        const day = createdOn.getDate();
+        const month = namaBulan[createdOn.getMonth()];
+        const year = createdOn.getFullYear();
+        const jam = createdOn.getHours();
+        const menit = createdOn.getMinutes();
+        const detik = createdOn.getSeconds();  %>
+
+        <div class="card my-3 last-transaction">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="fw-bolder mb-1 fs-5 <%= transaksi.transaction_type == 'TOPUP' ? 'text-success' : 'text-danger' %> text-success">+ Rp. <%= transaksi.total_amount.toLocaleString('id-ID') %></div>
+                        <small class="text-small fw-normal fs-8"><%= `${day} ${month} ${year}` %></small> <small class="text-small fw-normal fs-8 ms-1"><%= `${jam}:${menit} WIB` %></small>
+                    </div>
+                    <div class="col-6 text-end">
+                        <small class="text-small fw-normal fs-8"><%= transaksi.description %></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <% }) %>
+    <a href="#" class="text-center text-decoration-none fw-semibold text-danger d-block mt-3" id="show-all" onclick="showAll()">Show More</a>
+</div>
+
+<script src="/public/js/transaction.js"></script>

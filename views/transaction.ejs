@@ -1,0 +1,65 @@
+<div class="container pt-2">
+    <%- include('components/alert') %>
+    <div class="row py-5 mb-2">
+        <div class="col-md-6">
+            <div class="rounded-circle mb-3" style="width: 90px; height: 90px; overflow: hidden; display: inline-block;">
+                <a href="/account"><img src="/public/image/assets/Illustrasi Login.png" class="img-fluid" alt="" id="image"></a>
+            </div>
+            <p class="h5">Selamat Datang,</p>
+            <p class="h3 fw-bolder"><%= dataProfile.data.first_name %> <%= dataProfile.data.last_name %></p>
+        </div>
+        <div class="col-md-6 rounded rounded-4 background-saldo p-4 pb-0">
+            <p class="h5 text-white fw-semibold">Saldo anda</p>
+            <p class="h2 text-white my-3" id="viewsaldo">Rp. <%= dataSaldo.data.balance.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %></p>
+            <p class="h2 text-white fw-normal my-3 d-none" id="closesaldo" onclick="toggleSaldo()">**************</p>
+            <p class="text-small text-white fw-normal" onclick="toggleSaldo()" style="cursor: pointer; margin-top: 28px;">Tutup saldo</p>
+        </div>
+    </div>
+
+    <p class="h5">Pembayaran,</p>
+    <p class="h4 fw-bolder mb-5">
+        <img width="40" src="<%= dataServices[0].service_icon %>" alt="">
+        <span class="ms-2"><%= dataServices[0].service_name %></span>
+    </p>
+    
+    <form action="/transaction" method="POST">
+        <div class="row my-4">
+            <div class="col-6">
+                <div class="d-grid gap-2" id="action">
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroup-sizing-default "><i class="bi bi-keyboard-fill"></i></span>
+                        <input type="text" class="form-control rounded-end py-2" id="nominal" value="Rp <%= dataServices[0].service_tariff.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %>" readonly>
+                        <input type="hidden" name="service_code" value="<%= dataServices[0].service_code %>">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-6">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-danger py-2" id="btntopup" data-bs-toggle="modal" data-bs-target="#confirm"><i class="bi bi-currency-dollar me-2"></i>Bayar</button>
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Beli <%= dataServices[0].service_name %> senilai Rp <%= dataServices[0].service_tariff.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-danger">Bayar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

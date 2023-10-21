@@ -1,0 +1,52 @@
+<div class="container pt-4">
+    <%- include('components/alert') %>
+    <form action="/profile/image" method="POST" enctype="multipart/form-data" id="formimage">
+        <div class="text-center">
+            <div class="rounded-circle image-container" onclick="inputClick()" style="background-image: url('<%= dataProfile.data.profile_image %>');">
+                <div class="position-relative">
+                </div>
+            </div>
+            <input type="file" id="file" name="file" class="d-none" onchange="changeImage()" accept="image/*">
+        </div>
+    </form>
+
+    <p class="h4 my-4 fw-semibold text-center">Ahmad Hayyi'lana</p>
+    <form action="/profile/update" method="POST" class="row g-3">
+        <div class="col-md-6 mx-auto">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="" value="<%= dataProfile.data.email %>" required readonly>
+                <label for="email">Email</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control edit" id="first_name" name="first_name" placeholder="" value="<%= dataProfile.data.first_name %>" required readonly>
+                <label for="first_name">Nama Depan</label>
+            </div>
+            
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control edit" id="last_name" name="last_name" placeholder="" value="<%= dataProfile.data.last_name %>" required readonly>
+                <label for="last_name">Nama Belakang</label>
+            </div>
+
+            <div class="row d-none animate__bounceIn delay-2000" id="save">
+                <div class="col-md-6">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-danger btn-lg my-1" type="button" onclick="cancelEdit()"><small>Batal</small></button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-danger btn-lg my-1" type="submit"><small>Simpan</small></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 animate__animated animate__bounceIn delay-2000" id="action">
+                <button class="btn btn-outline-danger btn-lg mb-3" id="edit" type="button" onclick="editProfile()"><small>Edit Profile</small> </button>
+                <a class="btn btn-danger btn-lg mb-3" type="button" href="/logout"><small>Logout</small></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/public/js/account.js"></script>

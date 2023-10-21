@@ -1,0 +1,98 @@
+<div class="container pt-2">
+    <%- include('components/alert') %>
+    <div class="row py-5 mb-2">
+        <div class="col-md-6">
+            <div class="rounded-circle mb-3" style="width: 90px; height: 90px; overflow: hidden; display: inline-block;">
+                <a href="/account"><img src="/public/image/assets/Illustrasi Login.png" class="img-fluid" alt="" id="image"></a>
+            </div>
+            <p class="h5">Selamat Datang,</p>
+            <p class="h3 fw-bolder"><%= dataProfile.data.first_name %> <%= dataProfile.data.last_name %></p>
+        </div>
+        <div class="col-md-6 rounded rounded-4 background-saldo p-4 pb-0">
+            <p class="h5 text-white fw-semibold">Saldo anda</p>
+            <p class="h2 text-white my-3" id="viewsaldo">Rp. <%= dataSaldo.data.balance.toLocaleString('id-ID', { minimumFractionDigits: 0 }) %></p>
+            <p class="h2 text-white fw-normal my-3 d-none" id="closesaldo" onclick="toggleSaldo()">**************</p>
+            <p class="text-small text-white fw-normal" onclick="toggleSaldo()" style="cursor: pointer; margin-top: 28px;">Tutup saldo</p>
+        </div>
+    </div>
+
+    <p class="h5">Silahkan masukkan,</p>
+    <p class="h3 fw-bolder mb-5">Nominal Top Up</p>
+    
+    <form action="/topup" method="POST">
+        <div class="row my-4">
+            <div class="col-6">
+                <div class="d-grid gap-2" id="action">
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroup-sizing-default "><i class="bi bi-keyboard-fill"></i></span>
+                        <input type="text" class="form-control rounded-end py-2" aria-describedby="nominalfeedback" name="nominal" id="nominal" oninput="inpNomimal()" value="Rp ">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(10000)">Rp. 10.000</button>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(20000)">Rp. 20.000</button>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(50000)">Rp. 50.000</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-6">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-secondary py-2" id="btntopup" data-bs-toggle="modal" data-bs-target="#confirm" disabled><i class="bi bi-piggy-bank-fill me-2"></i>Topup</button>
+                    
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Anda yakin untuk Topup sebesar <span id="angka"></span>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-danger">Simpan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(100000)">Rp. 100.000</button>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(250000)">Rp. 250.000</button>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-grid gap-2" id="action">
+                    <button type="button" class="btn btn-outline-secondary py-2" onclick="btnNomimal(500000)">Rp. 500.000</button>
+                </div>
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirm">
+                    Launch demo modal
+                  </button> -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Javascript -->
+<script src="/public/js/topup.js"></script>

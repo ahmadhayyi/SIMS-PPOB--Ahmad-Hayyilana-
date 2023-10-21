@@ -1,0 +1,40 @@
+.card-scroll-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -ms-overflow-style: scrollbar; /* Untuk kompatibilitas Internet Explorer */
+    scrollbar-width: thin; /* Untuk kompatibilitas Firefox */
+    white-space: nowrap;
+}
+.card-scroll-container::-webkit-scrollbar {
+    display: none; /* Menghilangkan tampilan scroll */
+}
+
+.card {
+    flex: 0 0 auto;
+    margin-right: 10px; /* Jarak antara kartu-kartu */
+}
+
+.background-saldo {
+    background-image: url('/public/image/assets/Background\ Saldo.png');
+    background-size: cover; /* Untuk mengisi seluruh area elemen */
+    background-repeat: no-repeat; /* Agar gambar tidak diulang */
+}
+
+.image-container {
+    width: 130px;
+    height: 130px;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    /* background-image: url('<%= dataProfile.data.profile_image %>'); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

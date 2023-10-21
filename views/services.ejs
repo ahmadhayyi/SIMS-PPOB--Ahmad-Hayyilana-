@@ -1,0 +1,15 @@
+<form action="/transaction" method="POST" class="row gx-3 gy-2 align-items-center">
+    <div class="container">
+    <div class="col-sm-3">
+      <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+      <select name="service_code" class="form-select" id="specificSizeSelect">
+        <% dataServices.data.forEach(service => { %>
+            <option value="<%= service.service_code %>"><%= service.service_name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+</form>

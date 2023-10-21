@@ -11,12 +11,15 @@ const showAll = () => {
 
 const showMore =  (month) => {
     const offset = document.querySelectorAll(`.list-data-${month}`).length
+    const loader = document.getElementById('loader');
+    loader.classList.toggle('d-none')
     fetch(`/transaction?offset=${offset}`, {
         method: 'GET',
     })
     .then(response => response.json())
     .then(data => {
         listData(data, month);
+        loader.classList.toggle('d-none')
     })
     .catch(error => {
         console.error(error)
@@ -42,7 +45,6 @@ const listData =  (data, bulan) => {
         const year = createdOn.getFullYear();
         const jam = createdOn.getHours();
         const menit = createdOn.getMinutes();
-        const detik = createdOn.getSeconds();
 
         if(month == bulan && getData < 5){
             getData++

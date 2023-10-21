@@ -109,6 +109,11 @@ dataHistory.data.records.forEach(transaction => {
 
     <% }) %>
     <a href="#" class="text-center text-decoration-none fw-semibold text-danger d-block mt-3" id="show-all" onclick="showAll()">Show More</a>
+    <div class="text-center d-none" id="loader">
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 </div>
 
 <script src="/public/js/transaction.js"></script>
